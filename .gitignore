@@ -1,0 +1,13 @@
+target/*
+
+.calva/*
+.clj-kondo/*
+.cpcache/*
+.lsp/*
+.portal/*
+.vscode/*
+
+dev.code-workspace
+
+.lein-repl-history
+.nrepl-port
