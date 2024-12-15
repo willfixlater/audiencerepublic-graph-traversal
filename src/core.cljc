@@ -34,7 +34,7 @@
    Opts:
    max-weight - the max. weight that will be generated for an edge"
   [n s & {:keys [max-weight] :or {max-weight 100}}]
-  (assert (nat-int? n) "n must be a natural integer")
+  (assert (nat-int? n) "n must be a non-negative integer")
   (assert (<= (dec n) s (* n (dec n))) "s must be between n-1 & n(n-1)")
   (case n
     0 {}
@@ -68,6 +68,7 @@
    :path - A vector of keys detailing the shortest path from origin to that node
    :distance - The geodesic distance from origin to that node"
   [graph origin]
+  (assert (contains? graph origin) "origin must be in graph")
   (let [infinity Long/MAX_VALUE
         sum-dist #(or (some #{infinity} %&) (apply + %&))
         init-acc-vals {:path [], :distance infinity}
@@ -102,12 +103,15 @@
   "Takes a graph, an origin and destination key and returns a vector containing
    the shortest path from origin to destination."
   [graph origin destination]
+  (assert (contains? graph origin) "origin must be in graph")
+  (assert (contains? graph destination) "destination must be in graph")
   (get-in (dijkstra graph origin) [destination :path] ::no-path))
 
 (defn eccentricity
   "Takes a graph and an origin and returns the furthest node away from origin by
    geodesic distance."
   [graph origin]
+  (assert (contains? graph origin) "origin must be in graph")
   (apply max (->> (dijkstra graph origin)
                   vals
                   (remove #{::no-path})
